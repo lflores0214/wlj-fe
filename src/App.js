@@ -10,6 +10,7 @@ import {
 import ThemeToggler from "./components/ThemeToggler";
 import LoginForm from "./pages/auth/Login.component";
 import RegisterForm from "./pages/auth/Register.component";
+import Dashboard from './components/Dashboard.compnent';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         </Route>
         <Route path="/login">
           <LoginForm />
+        </Route>
+        <Route path='/dashboard' >
+          <Dashboard />
         </Route>
       </ColorModeProvider>
     </ThemeProvider>

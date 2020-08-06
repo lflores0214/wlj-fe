@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
 import {
   Flex,
@@ -33,24 +33,25 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-
-    axios
-      .post(
-        "https://weightliftingjournal1.herokuapp.com/api/auth/login",
-        userInfo
-      )
+    console.log(userInfo);
+    axiosWithAuth()
+      .post("https://weightliftingjournal1.herokuapp.com/api/auth/login", {
+        username: userInfo.username,
+        password: userInfo.password,
+      })
       .then((response) => {
         console.log(response);
         setIsLoggedIn(true);
         setIsLoading(false);
         setShowPassword(false);
+        localStorage.setItem("token", response.data.token)
         setUserInfo({
           username: "",
           password: "",
         });
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error.message);
         setError(`Error logging in`);
         setIsLoading(false);
         setShowPassword(false);
@@ -101,6 +102,8 @@ const LoginForm = () => {
               <FormControl isRequired>
                 <FormLabel>Username</FormLabel>
                 <Input
+                  id="username"
+                  name="username"
                   type="text"
                   placeholder="Username"
                   isRequired
@@ -113,6 +116,8 @@ const LoginForm = () => {
                 <InputGroup>
                   <Input
                     type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
                     placeholder="password"
                     isRequired
                     size="lg"
