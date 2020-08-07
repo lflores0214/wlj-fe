@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { axiosWithAuth } from "../../utils/axiosWithAuth";
+import { connect } from "react-redux";
+import { userLogIn } from "../../redux/user/user.actions";
 
 import {
   Flex,
@@ -18,7 +19,7 @@ import {
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-const LoginForm = () => {
+const LoginForm = ({ userLogIn }) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
@@ -33,33 +34,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    console.log(userInfo);
-    axiosWithAuth()
-      .post("https://weightliftingjournal1.herokuapp.com/api/auth/login", {
-        username: userInfo.username,
-        password: userInfo.password,
-      })
-      .then((response) => {
-        console.log(response);
-        setIsLoggedIn(true);
-        setIsLoading(false);
-        setShowPassword(false);
-        localStorage.setItem("token", response.data.token)
-        setUserInfo({
-          username: "",
-          password: "",
-        });
-      })
-      .catch((error) => {
-        console.error(error.message);
-        setError(`Error logging in`);
-        setIsLoading(false);
-        setShowPassword(false);
-        setUserInfo({
-          username: "",
-          password: "",
-        });
-      });
+    userLogIn(userInfo);
   };
   const handleChange = (e) => {
     setUserInfo({
@@ -152,4 +127,8 @@ const LoginForm = () => {
     </Flex>
   );
 };
-export default LoginForm;
+
+const mapDispatchToProps = {
+  userLogIn,
+};
+export default connect(null, mapDispatchToProps)(LoginForm);

@@ -1,19 +1,37 @@
 import UserActionTypes from "./user.types";
+import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
-export const logInStart = (emailAndPassword) => ({
+const logInStart = (userInfo) => ({
   type: UserActionTypes.LOG_IN_START,
-  payload: emailAndPassword,
+  payload: userInfo,
 });
 
-export const logInSuccess = (user) => ({
+const logInSuccess = (user) => ({
   type: UserActionTypes.LOG_IN_SUCCESS,
   payload: user,
 });
 
-export const logInFailure = (error) => ({
+const logInFailure = (error) => ({
   type: UserActionTypes.LOG_IN_FAILURE,
   payload: error,
 });
+
+export const userLogIn = (userInfo) => (dispatch) => {
+  dispatch({ type: logInStart });
+  axiosWithAuth()
+    .post(
+      "https://weightliftingjournal1.herokuapp.com/api/auth/login",
+      userInfo
+    )
+    .then((response) => {
+      dispatch({ type: logInSuccess, payload: userInfo });
+      localStorage.setItem("token", response.data.token);
+    })
+    .catch((error) => {
+      dispatch({ type: logInFailure, payload: error });
+      console.error(error.message);
+    });
+};
 
 export const registerStart = (user) => ({
   type: UserActionTypes.REGISTER_START,
