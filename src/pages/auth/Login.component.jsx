@@ -27,9 +27,10 @@ const LoginForm = ({
   userLogIn,
   isLoading,
   isLoggedIn,
-  error,
   setIsLoggedIn,
   setIsLoading,
+  error,
+  user,
 }) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
@@ -59,7 +60,7 @@ const LoginForm = ({
     <Flex width="full" align="center" justifyContent="center">
       <Box p={2}>
         <Box textAlign="center">
-          <Heading>Login</Heading>
+  <Heading>{isLoggedIn ? `Welcome ${user.username}` : "Log in"}</Heading>
         </Box>
         <Box
           my={4}

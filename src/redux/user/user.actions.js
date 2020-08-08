@@ -18,7 +18,7 @@ export const setCurrentUser = (user) => ({
   payload: user,
 });
 export const userLogIn = (userInfo) => (dispatch) => {
-  dispatch({ type: logInStart });
+  dispatch(logInStart);
   axiosWithAuth()
     .post(
       "https://weightliftingjournal1.herokuapp.com/api/auth/login",
@@ -33,7 +33,8 @@ export const userLogIn = (userInfo) => (dispatch) => {
       localStorage.setItem("token", response.data.token);
     })
     .catch((error) => {
-      dispatch({ type: logInFailure, payload: error });
+      dispatch(logInFailure(error.message));
+      dispatch(setIsLoading(false))
       console.error(error.message);
     });
 };
