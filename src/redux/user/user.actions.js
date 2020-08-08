@@ -1,33 +1,34 @@
 import UserActionTypes from "./user.types";
 import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
-const logInStart = (userInfo) => ({
+const logInStart = () => ({
   type: UserActionTypes.LOG_IN_START,
-  payload: userInfo,
 });
 
-const logInSuccess = (userName) => ({
+const logInSuccess = () => ({
   type: UserActionTypes.LOG_IN_SUCCESS,
-  payload: userName,
 });
 
 const logInFailure = (error) => ({
   type: UserActionTypes.LOG_IN_FAILURE,
   payload: error,
 });
-
+export const setCurrentUser = (user) => ({
+  type: UserActionTypes.SET_CURRENT_USER,
+  payload: user,
+});
 export const userLogIn = (userInfo) => (dispatch) => {
-  dispatch({ type: logInStart, payload: userInfo });
+  dispatch({ type: logInStart });
   axiosWithAuth()
     .post(
       "https://weightliftingjournal1.herokuapp.com/api/auth/login",
       userInfo
     )
     .then((response) => {
-      dispatch({
-        type: logInSuccess,
-        payload: { username: response.data.username, id: response.data.id },
-      });
+      dispatch(logInSuccess());
+      dispatch(setCurrentUser({id: response.data.id, username: response.data.username}));
+      dispatch(setIsLoading(false));
+      dispatch(setIsLoggedIn(true))
       console.log(response.data);
       localStorage.setItem("token", response.data.token);
     })
@@ -36,6 +37,15 @@ export const userLogIn = (userInfo) => (dispatch) => {
       console.error(error.message);
     });
 };
+
+export const setIsLoggedIn = (bool) => ({
+  type: UserActionTypes.SET_IS_LOGGED_IN,
+  payload: bool,
+});
+export const setIsLoading = (bool) => ({
+  type: UserActionTypes.SET_IS_LOADING,
+  payload: bool,
+});
 
 export const registerStart = (user) => ({
   type: UserActionTypes.REGISTER_START,

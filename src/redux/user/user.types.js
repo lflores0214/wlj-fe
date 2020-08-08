@@ -12,5 +12,8 @@ const UserActionTypes = {
   LOG_OUT_START: "LOG_OUT_START",
   LOG_OUT_SUCCESS: "LOG_OUT_SUCCESS",
   LOG_OUT_FAILURE: "LOG_OUT_FAILURE",
+
+  SET_IS_LOGGED_IN: "SET_IS_LOGGED_IN",
+  SET_IS_LOADING: "SET_IS_LOADING"
 };
 export default UserActionTypes;

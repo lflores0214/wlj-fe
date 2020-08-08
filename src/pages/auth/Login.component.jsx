@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { userLogIn } from "../../redux/user/user.actions";
+import {
+  userLogIn,
+  setIsLoggedIn,
+  setIsLoading,
+} from "../../redux/user/user.actions";
 
 import {
   Flex,
@@ -19,23 +23,26 @@ import {
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-const LoginForm = ({ userLogIn, user, isLoading }) => {
+const LoginForm = ({
+  userLogIn,
+  isLoading,
+  isLoggedIn,
+  error,
+  setIsLoggedIn,
+  setIsLoading,
+}) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
   });
-  // const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setIsLoading(true);
-    console.log(user);
-    await userLogIn(userInfo);
+    setIsLoading(true);
+    userLogIn(userInfo);
   };
   const handleChange = (e) => {
     setUserInfo({
@@ -43,7 +50,11 @@ const LoginForm = ({ userLogIn, user, isLoading }) => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const logOut = e => {
+    e.preventDefault()
+    setIsLoggedIn(false)
+    localStorage.setItem('token', null)
+  }
   return (
     <Flex width="full" align="center" justifyContent="center">
       <Box p={2}>
@@ -67,7 +78,7 @@ const LoginForm = ({ userLogIn, user, isLoading }) => {
                 variant="outline"
                 width="full"
                 mt={4}
-                onClick={() => setIsLoggedIn(false)}
+                onClick={logOut}
               >
                 Sign Out
               </Button>
@@ -128,13 +139,15 @@ const LoginForm = ({ userLogIn, user, isLoading }) => {
     </Flex>
   );
 };
-const mapStateToProps = ({ user }) => {
-  return {
-    user: user.user,
-    isLoading: user.isLoading,
-  };
-};
-const mapDispatchToProps = {
-  userLogIn,
-};
+const mapStateToProps = ({ user }) => ({
+  user: user.user,
+  isLoading: user.isLoading,
+  isLoggedIn: user.isLoggedIn,
+  error: user.error,
+});
+const mapDispatchToProps = (dispatch) => ({
+  userLogIn: (userInfo) => dispatch(userLogIn(userInfo)),
+  setIsLoggedIn: (bool) => dispatch(setIsLoggedIn(bool)),
+  setIsLoading: (bool) => dispatch(setIsLoading(bool)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

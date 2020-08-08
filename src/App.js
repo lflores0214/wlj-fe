@@ -1,5 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import { connect } from "react-redux"
 import {
   ThemeProvider,
   theme,
@@ -11,6 +12,8 @@ import ThemeToggler from "./components/ThemeToggler";
 import LoginForm from "./pages/auth/Login.component";
 import RegisterForm from "./pages/auth/Register.component";
 import Dashboard from "./components/Dashboard.compnent";
+
+import { setCurrentUser } from './redux/user/user.actions';
 
 function App() {
   return (
@@ -25,5 +28,8 @@ function App() {
     </ThemeProvider>
   );
 }
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+})
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);
