@@ -19,12 +19,12 @@ import {
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-const LoginForm = ({ userLogIn }) => {
+const LoginForm = ({ userLogIn, user, isLoading }) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,8 +33,9 @@ const LoginForm = ({ userLogIn }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    userLogIn(userInfo);
+    // setIsLoading(true);
+    console.log(user);
+    await userLogIn(userInfo);
   };
   const handleChange = (e) => {
     setUserInfo({
@@ -127,8 +128,13 @@ const LoginForm = ({ userLogIn }) => {
     </Flex>
   );
 };
-
+const mapStateToProps = ({ user }) => {
+  return {
+    user: user.user,
+    isLoading: user.isLoading,
+  };
+};
 const mapDispatchToProps = {
   userLogIn,
 };
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
