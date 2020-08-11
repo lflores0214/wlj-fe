@@ -47,7 +47,11 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         isLoggedIn: false,
         error: null,
       };
-
+      case UserActionTypes.REGISTER_START:
+        return {
+          ...state,
+          isLoading: true
+        }
     case UserActionTypes.LOG_IN_FAILURE:
     case UserActionTypes.REGISTER_FAILURE:
     case UserActionTypes.LOG_OUT_FAILURE:

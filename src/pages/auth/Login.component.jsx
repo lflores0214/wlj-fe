@@ -73,7 +73,7 @@ const LoginForm = ({
         >
           {isLoggedIn ? (
             <Box textAlign="center">
-              <Text>{userInfo.username} logged In!</Text>
+              <Text>{user.username} logged In!</Text>
               <Button
                 variantColor="orange"
                 variant="outline"

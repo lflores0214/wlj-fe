@@ -3,7 +3,7 @@ import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 import { Flex } from "@chakra-ui/core";
 
-import WorkoutCard from "./WorkoutCard.component";
+import WorkoutCard from "../components/WorkoutCard.component";
 
 const Dashboard = () => {
 

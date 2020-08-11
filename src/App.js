@@ -8,19 +8,18 @@ import {
   CSSReset,
 } from "@chakra-ui/core";
 
-import ThemeToggler from "./components/ThemeToggler";
+
 import LoginForm from "./pages/auth/Login.component";
 import RegisterForm from "./pages/auth/Register.component";
-import Dashboard from "./components/Dashboard.compnent";
-
-import { setCurrentUser } from './redux/user/user.actions';
+import Dashboard from "./pages/Dashboard.component"
+import Header from "./components/Header.component"
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <ColorModeProvider>
         <CSSReset />
-        <ThemeToggler />
+        <Route path="/" component={Header} />
         <Route path="/register" component={RegisterForm} />
         <Route path="/login" component={LoginForm} />
         <Route path="/dashboard" component={Dashboard} />
@@ -28,8 +27,6 @@ function App() {
     </ThemeProvider>
   );
 }
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-})
 
-export default connect(null, mapDispatchToProps)(App);
+
+export default connect(null)(App);
