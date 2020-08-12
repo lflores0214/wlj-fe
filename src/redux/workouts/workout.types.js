@@ -1,0 +1,7 @@
+const WorkoutActionTypes = {
+    GET_JOURNAL_START: "GET_JOURNAL_START",
+    GET_JOURNAL_SUCCESS: "GET_JOURNAL_SUCCESS",
+    GET_JOURNAL_FAILURE: "GET_JOURNAL_FAILURE",
+}
+
+export default WorkoutActionTypes

@@ -17,10 +17,15 @@ import {
   Icon,
   Popover,
   PopoverTrigger,
-  PopoverContent,
 } from "@chakra-ui/core";
 
-const RegisterForm = ({ registerUser, isLoading, error, history }) => {
+const RegisterForm = ({
+  registerUser,
+  isLoading,
+  error,
+  registered,
+  history,
+}) => {
   const [userInfo, setUserInfo] = useState({
     username: "",
     email: "",
@@ -31,14 +36,13 @@ const RegisterForm = ({ registerUser, isLoading, error, history }) => {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    await registerUser({
+    registerUser({
       username: userInfo.username,
       email: userInfo.email,
       password: userInfo.password,
     });
-    await history.push("/login");
   };
   const handleChange = (e) => {
     setUserInfo({
@@ -48,6 +52,9 @@ const RegisterForm = ({ registerUser, isLoading, error, history }) => {
   };
   const passMatch = userInfo.password === userInfo.confirmPassword;
 
+  if (registered) {
+    history.push("/login");
+  }
   return (
     <Flex width="full" align="center" justifyContent="center">
       <Box p={2}>
@@ -176,6 +183,7 @@ const RegisterForm = ({ registerUser, isLoading, error, history }) => {
 const mapStateToProps = ({ user }) => ({
   isLoading: user.isLoading,
   error: user.error,
+  registered: user.registered,
 });
 
 const mapDispatchToProps = {
