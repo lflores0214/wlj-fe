@@ -26,6 +26,10 @@ export const setIsLoading = (bool) => ({
   type: UserActionTypes.SET_IS_LOADING,
   payload: bool,
 });
+export const setToken = (token) => ({
+  type: UserActionTypes.SET_TOKEN,
+  payload: token,
+});
 export const userLogIn = (userInfo) => (dispatch) => {
   dispatch(logInStart);
   axiosWithAuth()
@@ -35,19 +39,20 @@ export const userLogIn = (userInfo) => (dispatch) => {
     )
     .then((response) => {
       const username = capitalizeFirstLetter(response.data.username);
+      const { token } = response.data;
       dispatch(logInSuccess());
+      console.log(token);
+      dispatch(setToken(token));
       dispatch(setCurrentUser({ id: response.data.id, username: username }));
       dispatch(setIsLoading(false));
       dispatch(setIsLoggedIn(true));
       console.log(response.data);
-      localStorage.setItem("token", response.data.token);
     })
     .catch((error) => {
       dispatch(logInFailure(error.message));
       dispatch(setIsLoading(false));
       console.error(error.message);
     });
-    
 };
 
 export const registerStart = () => ({
@@ -72,7 +77,7 @@ export const registerUser = (userInfo) => (dispatch) => {
     )
     .then((response) => {
       dispatch(registerSuccess());
-      setIsLoading(false)
+      setIsLoading(false);
     })
     .catch((error) => {
       dispatch(registerFailure(error));

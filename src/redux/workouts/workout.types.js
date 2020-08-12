@@ -2,6 +2,8 @@ const WorkoutActionTypes = {
     GET_JOURNAL_START: "GET_JOURNAL_START",
     GET_JOURNAL_SUCCESS: "GET_JOURNAL_SUCCESS",
     GET_JOURNAL_FAILURE: "GET_JOURNAL_FAILURE",
+
+    SET_IS_LOADING: "SET_IS_LOADING" 
 }
 
 export default WorkoutActionTypes

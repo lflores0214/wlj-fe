@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom"
 import {
   userLogIn,
   setIsLoggedIn,
@@ -51,93 +52,98 @@ const LoginForm = ({
       [e.target.name]: e.target.value,
     });
   };
-  const logOut = e => {
-    e.preventDefault()
-    setIsLoggedIn(false)
-    localStorage.setItem('token', null)
-  }
+  const logOut = (e) => {
+    e.preventDefault();
+    setIsLoggedIn(false);
+    localStorage.setItem("token", null);
+  };
   return (
-    <Flex width="full" align="center" justifyContent="center">
-      <Box p={2}>
-        <Box textAlign="center">
-  <Heading>{isLoggedIn ? `Welcome ${user.username}` : "Log in"}</Heading>
-        </Box>
-        <Box
-          my={4}
-          textAlign="left"
-          p={8}
-          maxWidth="500px"
-          borderWidth={1}
-          borderRadius={8}
-          boxShadow="lg"
-        >
-          {isLoggedIn ? (
-            <Box textAlign="center">
-              <Text>{user.username} logged In!</Text>
-              <Button
-                variantColor="orange"
-                variant="outline"
-                width="full"
-                mt={4}
-                onClick={logOut}
-              >
-                Sign Out
-              </Button>
-            </Box>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              {error && <ErrorMessage message={error} />}
-              <FormControl isRequired>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  id="username"
-                  name="username"
-                  type="text"
-                  placeholder="Username"
-                  isRequired
-                  size="lg"
-                  onChange={handleChange}
-                />
-              </FormControl>
-              <FormControl isRequired>
-                <FormLabel>Password</FormLabel>
-                <InputGroup>
+    <>
+    {isLoggedIn && <Redirect to="/dashboard" />}
+      <Flex width="full" align="center" justifyContent="center">
+        <Box p={2}>
+          <Box textAlign="center">
+            <Heading>
+              {isLoggedIn ? `Welcome ${user.username}` : "Log in"}
+            </Heading>
+          </Box>
+          <Box
+            my={4}
+            textAlign="left"
+            p={8}
+            maxWidth="500px"
+            borderWidth={1}
+            borderRadius={8}
+            boxShadow="lg"
+          >
+            {isLoggedIn ? (
+              <Box textAlign="center">
+                <Text>{user.username} logged In!</Text>
+                <Button
+                  variantColor="orange"
+                  variant="outline"
+                  width="full"
+                  mt={4}
+                  onClick={logOut}
+                >
+                  Log Out
+                </Button>
+              </Box>
+            ) : (
+              <form onSubmit={handleSubmit}>
+                {error && <ErrorMessage message={error} />}
+                <FormControl isRequired>
+                  <FormLabel>Username</FormLabel>
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    placeholder="password"
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Username"
                     isRequired
                     size="lg"
                     onChange={handleChange}
                   />
-                  <InputRightElement width="3rem">
-                    <Button
-                      h="1.5rem"
-                      size="sm"
-                      onClick={handlePasswordVisibility}
-                    >
-                      {showPassword ? (
-                        <Icon name="view-off" />
-                      ) : (
-                        <Icon name="view" />
-                      )}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <Button width="full" mt={4} type="submit">
-                {isLoading ? (
-                  <CircularProgress isIndeterminate size="24px" />
-                ) : (
-                  "SignIn"
-                )}
-              </Button>
-            </form>
-          )}
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <InputGroup>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="password"
+                      isRequired
+                      size="lg"
+                      onChange={handleChange}
+                    />
+                    <InputRightElement width="3rem">
+                      <Button
+                        h="1.5rem"
+                        size="sm"
+                        onClick={handlePasswordVisibility}
+                      >
+                        {showPassword ? (
+                          <Icon name="view-off" />
+                        ) : (
+                          <Icon name="view" />
+                        )}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <Button width="full" mt={4} type="submit">
+                  {isLoading ? (
+                    <CircularProgress isIndeterminate size="24px" />
+                  ) : (
+                    "Log In"
+                  )}
+                </Button>
+              </form>
+            )}
+          </Box>
         </Box>
-      </Box>
-    </Flex>
+      </Flex>
+    </>
   );
 };
 const mapStateToProps = ({ user }) => ({

@@ -1,12 +1,10 @@
 import axios from "axios";
 
-export const axiosWithAuth = () => {
-  const token = localStorage.getItem("token");
-
+export const axiosWithAuth = (token = null) => {
   return axios.create({
     baseURL: "https://weightliftingjournal1.herokuapp.com/api/",
     headers: {
-      Authorization: token
-    }
+      Authorization: token,
+    },
   });
 };

@@ -11,19 +11,23 @@ export const workoutReducer = (state = INITIAL_STATE, action) => {
     case WorkoutActionTypes.GET_JOURNAL_START:
       return {
         ...state,
-        isLoading: action.payload
       };
     case WorkoutActionTypes.GET_JOURNAL_SUCCESS:
       return {
         ...state,
         workouts: action.payload,
       };
+
     case WorkoutActionTypes.GET_JOURNAL_FAILURE:
       return {
         ...state,
         error: action.payload,
       };
-
+    case WorkoutActionTypes.SET_IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
     default:
       return state;
   }

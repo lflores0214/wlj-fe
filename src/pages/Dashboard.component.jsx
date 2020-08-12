@@ -6,26 +6,23 @@ import { Flex } from "@chakra-ui/core";
 import WorkoutCard from "../components/JournalEntry.component";
 import ErrorMessage from "../components/ErrorMessage";
 
-const Dashboard = ({
-  id,
-  user,
-  username,
-  entires,
-  userError,
-  journalError,
-  getJournal,
-}) => {
-  const token = localStorage.getItem("token");
-  
+const Dashboard = ({ id, userError, journalError, getJournal, token }) => {
+  console.log(id)
   useEffect(() => {
-    console.log(id);
-    console.log(user);
     getJournal(token, id);
   }, []);
-  
+const errorMessage= () => {
+  if (journalError ) {
+    return journalError.message
+  }  else {
+    return userError.message
+  }
+}
   return (
     <Flex textAlign="center" justifyContent="center">
-      {userError || journalError ? <ErrorMessage message={journalError.message}/> : null}
+      {userError || journalError ? (
+        <ErrorMessage message={errorMessage} />
+      ) : null}
       <WorkoutCard />
     </Flex>
   );
@@ -33,8 +30,9 @@ const Dashboard = ({
 
 const mapStateToProps = ({ user, journal }) => ({
   user: user,
-  id: user.id,
-  username: user.username,
+  id: user.user.id,
+  token: user.token,
+  username: user.user.username,
   entries: journal.workouts,
   userError: user.error,
   journalError: journal.error,

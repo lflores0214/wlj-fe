@@ -2,6 +2,7 @@ import UserActionTypes from "./user.types";
 
 const INITIAL_STATE = {
   user: { id: 0, username: "" },
+  token: "",
   isLoading: false,
   isLoggedIn: false,
   error: null,
@@ -59,6 +60,11 @@ export const userReducer = (state = INITIAL_STATE, action) => {
         isLoading: false,
         registered: true,
       }
+      case UserActionTypes.SET_TOKEN:
+        return {
+          ...state,
+          token: action.payload
+        }
     case UserActionTypes.LOG_IN_FAILURE:
     case UserActionTypes.REGISTER_FAILURE:
     case UserActionTypes.LOG_OUT_FAILURE:
