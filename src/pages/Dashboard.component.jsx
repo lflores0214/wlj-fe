@@ -1,41 +1,80 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { getJournal } from "../redux/workouts/workout.actions";
+import { Redirect } from "react-router-dom";
 
-import { Flex } from "@chakra-ui/core";
-import WorkoutCard from "../components/JournalEntry.component";
+import { Flex, Box, IconButton } from "@chakra-ui/core";
+import JournalEntry from "../components/JournalEntry.component";
 import ErrorMessage from "../components/ErrorMessage";
 
-const Dashboard = ({ id, userError, journalError, getJournal, token }) => {
-  console.log(id)
+import { getJournal } from "../redux/workouts/workout.actions";
+
+const Dashboard = ({
+  id,
+  userError,
+  journalError,
+  getJournal,
+  token,
+  entries,
+  isLoggedIn,
+  history,
+}) => {
   useEffect(() => {
-    getJournal(token, id);
-  }, []);
-const errorMessage= () => {
-  if (journalError ) {
-    return journalError.message
-  }  else {
-    return userError.message
-  }
-}
+    if (isLoggedIn === false) {
+      history.push("/login");
+    } else {
+      getJournal(token, id);
+    }
+  }, [isLoggedIn, id]);
+  console.log(entries);
+  const errorMessage = () => {
+    return journalError ? journalError.message : userError.message;
+  };
   return (
-    <Flex textAlign="center" justifyContent="center">
-      {userError || journalError ? (
-        <ErrorMessage message={errorMessage} />
-      ) : null}
-      <WorkoutCard />
-    </Flex>
+    <>
+      {!isLoggedIn && <Redirect to="/login" />}
+      {entries.length ? (
+        <>
+          <Flex textAlign="center" justifyContent="center">
+            {userError || journalError ? (
+              <ErrorMessage message={errorMessage} />
+            ) : null}
+            {entries.map((entry) => (
+              <JournalEntry
+                key={entry.id}
+                workoutName={entry.workout}
+                reps={entry.reps}
+                sets={entry.sets}
+                weight={entry.weight}
+                notes={entry.notes}
+                bodyRegion={entry.body_region}
+                date={entry.created_at}
+              />
+            ))}
+          </Flex>
+          <Box position="absolute" bottom="20" right="20">
+            <IconButton aria-label="add workout" icon="add" isRound />
+          </Box>
+        </>
+      ) : (
+        <>
+          <Box textAlign="center">There are no entries </Box>
+          <Box position="absolute" right="0" bottom="0">
+            <IconButton aria-label="add workout" icon="add" isRound />
+          </Box>
+        </>
+      )}
+    </>
   );
 };
 
 const mapStateToProps = ({ user, journal }) => ({
-  user: user,
   id: user.user.id,
-  token: user.token,
   username: user.user.username,
+  token: user.token,
   entries: journal.workouts,
   userError: user.error,
   journalError: journal.error,
+  isLoggedIn: user.isLoggedIn,
 });
 
 const mapDispatchTProps = (dispatch) => ({

@@ -67,7 +67,11 @@ export const registerFailure = (error) => ({
   type: UserActionTypes.REGISTER_FAILURE,
   payload: error,
 });
-
+export const userLogOut = () => dispatch => {
+  dispatch(setIsLoggedIn(false))
+  dispatch(setCurrentUser({ id: 0, username: "" }))
+  dispatch(setToken(""))
+}
 export const registerUser = (userInfo) => (dispatch) => {
   dispatch(registerStart());
   axiosWithAuth()
