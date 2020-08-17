@@ -9,7 +9,6 @@ import { userLogOut } from "../redux/user/user.actions";
 const Header = ({ isLoggedIn, userLogOut }) => {
   return (
     <>
-    
       <Flex justifyContent="space-between">
         <ThemeToggler />
         <Box py={4} mr={12}>

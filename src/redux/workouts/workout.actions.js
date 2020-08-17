@@ -32,3 +32,19 @@ export const getJournal = (token, id) => (dispatch) => {
       dispatch(setIsLoading(false));
     });
 };
+const addWorkoutStart = () => ({
+  type: WorkoutActionTypes.ADD_WORKOUT_START
+})
+const addWorkoutSuccess = () => ({
+  
+})
+export const addEntry = (token, id, workout) => dispatch => {
+  dispatch(addWorkoutStart())
+  dispatch(setIsLoading(true))
+  axiosWithAuth(token)
+  .post(`users/${id}/journal`, workout)
+  .then(response => {
+    console.log(response)
+    dispatch()
+  })
+}

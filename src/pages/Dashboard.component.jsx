@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
@@ -7,6 +7,7 @@ import JournalEntry from "../components/JournalEntry.component";
 import ErrorMessage from "../components/ErrorMessage";
 
 import { getJournal } from "../redux/workouts/workout.actions";
+import WorkoutInput from "../components/WorkoutInput.component";
 
 const Dashboard = ({
   id,
@@ -25,7 +26,9 @@ const Dashboard = ({
       getJournal(token, id);
     }
   }, [isLoggedIn, id]);
-  console.log(entries);
+
+  const [isOpen, setIsOpen] = useState(false);
+  
   const errorMessage = () => {
     return journalError ? journalError.message : userError.message;
   };
@@ -52,14 +55,15 @@ const Dashboard = ({
             ))}
           </Flex>
           <Box position="absolute" bottom="20" right="20">
-            <IconButton aria-label="add workout" icon="add" isRound />
+            <IconButton aria-label="add workout" icon="add" isRound onClick={() => setIsOpen(true)} />
           </Box>
+          {isOpen && <WorkoutInput isOpen={isOpen}  setIsOpen={setIsOpen}/>}
         </>
       ) : (
         <>
           <Box textAlign="center">There are no entries </Box>
           <Box position="absolute" right="0" bottom="0">
-            <IconButton aria-label="add workout" icon="add" isRound />
+            <IconButton aria-label="add workout" icon="add" isRound variant="ghost"/>
           </Box>
         </>
       )}
