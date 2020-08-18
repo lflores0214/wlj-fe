@@ -16,16 +16,14 @@ const JournalEntry = ({
   reps,
   sets,
   weight,
-  createAt,
+  createdAt,
+  notes,
   bodyRegion,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  console.log(entry)
-  for (const key in entry.workout) {
-      console.log(`${key}: ${entry[key]}`)
-  }
+
   return (
-    <Box width="20%" borderWidth="1px" rounded="sm">
+    <Box width="15%" borderWidth="1px" rounded="sm" mr={2}>
       <Editable
         textAlign="center"
         defaultValue={workoutName}
@@ -35,7 +33,51 @@ const JournalEntry = ({
         <EditablePreview />
         <EditableInput />
       </Editable>
-      
+      <Editable
+        textAlign="center"
+        defaultValue={sets}
+        isPreviewFocusable={false}
+        submitOnBlur={false}
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
+      <Editable
+        textAlign="center"
+        defaultValue={reps}
+        isPreviewFocusable={false}
+        submitOnBlur={false}
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
+      <Editable
+        textAlign="center"
+        defaultValue={weight}
+        isPreviewFocusable={false}
+        submitOnBlur={false}
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
+      <Editable
+        textAlign="center"
+        defaultValue={bodyRegion}
+        isPreviewFocusable={false}
+        submitOnBlur={false}
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
+      <Editable
+        textAlign="center"
+        defaultValue={notes}
+        isPreviewFocusable={false}
+        submitOnBlur={false}
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
     </Box>
   );
 };
