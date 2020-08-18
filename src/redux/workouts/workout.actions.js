@@ -33,18 +33,27 @@ export const getJournal = (token, id) => (dispatch) => {
     });
 };
 const addWorkoutStart = () => ({
-  type: WorkoutActionTypes.ADD_WORKOUT_START
-})
+  type: WorkoutActionTypes.ADD_WORKOUT_START,
+});
+const addWorkoutFailure = (error) => ({
+  type: WorkoutActionTypes.ADD_WORKOUT_FAILURE,
+  payload: error,
+});
 const addWorkoutSuccess = () => ({
-  
-})
-export const addEntry = (token, id, workout) => dispatch => {
-  dispatch(addWorkoutStart())
-  dispatch(setIsLoading(true))
+  type: WorkoutActionTypes.ADD_WORKOUT_SUCCESS,
+});
+export const addEntry = (token, id, workout) => (dispatch) => {
+  dispatch(addWorkoutStart());
+  dispatch(setIsLoading(true));
   axiosWithAuth(token)
-  .post(`users/${id}/journal`, workout)
-  .then(response => {
-    console.log(response)
-    dispatch()
-  })
-}
+    .post(`users/${id}/journal`, workout)
+    .then((response) => {
+      console.log(response);
+      dispatch(addWorkoutSuccess());
+      dispatch(setIsLoading(false));
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(addWorkoutFailure(error));
+    });
+};

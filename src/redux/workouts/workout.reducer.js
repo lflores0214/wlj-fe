@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 export const workoutReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case WorkoutActionTypes.GET_JOURNAL_START:
+    case WorkoutActionTypes.ADD_WORKOUT_START:
       return {
         ...state,
       };
@@ -17,7 +18,11 @@ export const workoutReducer = (state = INITIAL_STATE, action) => {
         ...state,
         workouts: action.payload,
       };
-
+    case WorkoutActionTypes.ADD_WORKOUT_SUCCESS:
+      return {
+        ...state,
+      };
+    case WorkoutActionTypes.ADD_WORKOUT_FAILURE:
     case WorkoutActionTypes.GET_JOURNAL_FAILURE:
       return {
         ...state,
